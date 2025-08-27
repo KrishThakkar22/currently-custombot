@@ -1,0 +1,12 @@
+fastapi
+python-dotenv
+beautifulsoup4
+langchain
+langchain-core
+langchain-qdrant
+langchain-openai
+langchain-huggingface
+qdrant-client
+httpx
+uvicorn[standard]
+openai
