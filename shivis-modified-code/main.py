@@ -27,7 +27,7 @@ async def chat_endpoint(request: Request):
         print(f"Already replied to message {msg_id}")
         return {"status": "already_replied"}
     # Extract text from HTML body
-    html_body = payload.get("data", {}).get("item", {}).get("conversation_parts", {}).get("conversation_parts", [])[-1].get("body", "")
+    html_body = payload.get("data", {}).get("item", {}).get("conversation_parts", {}).get("conversation_parts", [])[-1].get("body", "") or payload.get("data", {}).get("item", {}).get("source", {}).get("body")
     question = BeautifulSoup(html_body, "html.parser").get_text().strip()
     if not question:
         return {"status": "no_content"}

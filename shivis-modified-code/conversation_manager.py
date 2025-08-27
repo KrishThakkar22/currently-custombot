@@ -20,14 +20,17 @@ class Conversation:
             return_messages=True
         )
 class ConversationManager:
+
     def __init__(self, chatbot_service: ChatbotService, intercom_service: IntercomService):
         self._conversations = {}
         self._chatbot_service = chatbot_service
         self._intercom_service = intercom_service
+    
     def _get_or_create_conversation(self, conv_id: str) -> Conversation:
         if conv_id not in self._conversations:
             self._conversations[conv_id] = Conversation(conv_id, self._chatbot_service.model)
         return self._conversations[conv_id]
+    
     async def handle_message(self, conv_id: str, question: str, msg_id: str):
         conv = self._get_or_create_conversation(conv_id)
         conv.message_buffer.append(question)
@@ -35,6 +38,7 @@ class ConversationManager:
         if conv.pending_task:
             conv.pending_task.cancel()
         conv.pending_task = asyncio.create_task(self._delayed_invoke(conv, msg_id))
+    
     async def _delayed_invoke(self, conv: Conversation, msg_id: str):
         await asyncio.sleep(settings.BUFFER_WAIT_SECONDS)
         async with conv.lock:
@@ -58,5 +62,7 @@ class ConversationManager:
             elif "transferring you to a specialist" in answer.lower():
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
                 await self._intercom_service.unassign_conversation(conv.id)
+                if conv.id in self._conversations:
+                    del self._conversations[conv.id] # Clean up
             else:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
