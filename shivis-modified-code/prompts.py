@@ -53,6 +53,12 @@ SYSTEM_TEMPLATE = """
 4. Use conversation history for context.
 5. Provide a short, helpful answer.
 6. Escalate only if truly necessary.
+
+IMPORTANT: If the user writes closing words (ok, thanks, bye, perfect, great, got it, understood, etc.), 
+you MUST IGNORE all previous context and memory. 
+Reply ONLY: "You're welcome! Have a great day!" 
+Do not continue the conversation or repeat previous answers.
+
 """
 
 # Human prompt template for the RAG chain
