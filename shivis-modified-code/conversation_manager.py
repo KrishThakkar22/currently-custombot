@@ -14,7 +14,7 @@ class Conversation:
         self.pending_task = None
         self.memory = ConversationSummaryBufferMemory(
             llm=llm,
-            max_token_limit=100,
+            max_token_limit=500,
             memory_key="chat_history",
             input_key="question",
             return_messages=True
