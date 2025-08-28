@@ -10,7 +10,8 @@ class ChatbotService:
     def __init__(self):
         self.model = ChatOpenAI(
             model=settings.LLM_MODEL,
-            api_key=settings.OPENAI_API_KEY
+            api_key=settings.OPENAI_API_KEY,
+            temperature=1,
         )
         self.vector_store = QdrantVectorStore(
             client=QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY),
