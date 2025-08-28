@@ -4,6 +4,14 @@ from langchain.memory import ConversationSummaryBufferMemory
 from chatbot_service import ChatbotService
 from intercom_service import IntercomService
 from config import settings
+
+CLOSING_KEYWORDS = ["ok", "okay", "thanks", "thank you", "thankyou",
+                    "bye", "goodbye", "see you",
+                    "perfect", "great", "good",
+                    "got it", "understood", "alright"]
+
+
+
 class Conversation:
     """Represents the state of a single conversation."""
     def __init__(self, conv_id: str, llm):
@@ -45,14 +53,17 @@ class ConversationManager:
             if not conv.message_buffer:
                 return
             combined_message = " ".join(conv.message_buffer)
-            conv.message_buffer = []
-            chain = self._chatbot_service.get_chain(conv.memory)
-            try:
-                result = await chain.ainvoke({"question": combined_message})
-                answer = result.get("answer", "Sorry, I couldn't process that.")
-            except Exception as e:
-                print(f":x: Error during chain invocation: {e}")
-                answer = "An error occurred. Please try again later."
+            if any(kw in combined_message.lower for kw in CLOSING_KEYWORDS):
+                answer = "you're welcome"
+            else:
+                conv.message_buffer = []
+                chain = self._chatbot_service.get_chain(conv.memory)
+                try:
+                    result = await chain.ainvoke({"question": combined_message})
+                    answer = result.get("answer", "Sorry, I couldn't process that.")
+                except Exception as e:
+                    print(f":x: Error during chain invocation: {e}")
+                    answer = "An error occurred. Please try again later."
             # Handle different response types
             if "you're welcome" in answer.lower():
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
