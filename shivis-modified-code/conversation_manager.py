@@ -52,28 +52,31 @@ class ConversationManager:
         async with conv.lock:
             if not conv.message_buffer:
                 return
-            combined_message = " ".join(conv.message_buffer)
-            if any(kw in combined_message.lower for kw in CLOSING_KEYWORDS):
-                answer = "you're welcome"
-            else:
-                conv.message_buffer = []
-                chain = self._chatbot_service.get_chain(conv.memory)
-                try:
+
+            combined_message = " ".join(conv.message_buffer).strip()
+            conv.message_buffer = []  # clear early to avoid reprocessing
+
+            try:
+                # Closing keyword detection
+                if any(kw in combined_message.lower() for kw in CLOSING_KEYWORDS):
+                    answer = "You're welcome!"
+                else:
+                    chain = self._chatbot_service.get_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
                     answer = result.get("answer", "Sorry, I couldn't process that.")
-                except Exception as e:
-                    print(f":x: Error during chain invocation: {e}")
-                    answer = "An error occurred. Please try again later."
-            # Handle different response types
-            if "you're welcome" in answer.lower():
+            except Exception as e:
+                print(f":x: Error during chain invocation: {e}")
+                answer = "An error occurred. Please try again later."
+
+            # Handle response routing
+            ans_lower = answer.lower()
+            if "welcome" in ans_lower:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
                 await self._intercom_service.close_conversation(conv.id)
-                if conv.id in self._conversations:
-                    del self._conversations[conv.id] # Clean up
-            elif "transferring you to a specialist" in answer.lower():
+                self._conversations.pop(conv.id, None)  # safe cleanup
+            elif "specialist" in ans_lower and "transfer" in ans_lower:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
                 await self._intercom_service.unassign_conversation(conv.id)
-                if conv.id in self._conversations:
-                    del self._conversations[conv.id] # Clean up
+                self._conversations.pop(conv.id, None)
             else:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
