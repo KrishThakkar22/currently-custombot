@@ -17,7 +17,7 @@ class Settings:
     # Model Settings
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
     EMBEDDING_MODEL: str = "mixedbread-ai/mxbai-embed-large-v1"
-    LLM_MODEL: str = "gpt-4o-mini"
+    LLM_MODEL: str = "gpt-4o"
     HF_TOKEN: str = os.getenv("HF_TOKEN")
 
     # Application Settings
