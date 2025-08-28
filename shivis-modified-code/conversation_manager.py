@@ -64,6 +64,7 @@ class ConversationManager:
                     chain = self._chatbot_service.get_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
                     answer = result.get("answer", "Sorry, I couldn't process that.")
+                    print(result)
             except Exception as e:
                 print(f":x: Error during chain invocation: {e}")
                 answer = "An error occurred. Please try again later."
