@@ -26,7 +26,7 @@ class ChatbotService:
             ("system", SYSTEM_TEMPLATE),
             ("human", HUMAN_TEMPLATE)
         ])
-        self.general_prompt = ChatPromptTemplate(GENERAL_CONVERSATION_PROMPT)
+        self.general_prompt = ChatPromptTemplate.from_template(GENERAL_CONVERSATION_PROMPT)
     def get_chain(self, memory) -> ConversationalRetrievalChain:
         return ConversationalRetrievalChain.from_llm(
             llm=self.model,

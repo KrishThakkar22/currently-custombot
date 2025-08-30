@@ -32,7 +32,7 @@ class ConversationManager:
         self._conversations = {}
         self._chatbot_service = chatbot_service
         self._intercom_service = intercom_service
-        self.intent_prompt = ChatPromptTemplate(INTENT_PROMPT)
+        self.intent_prompt = ChatPromptTemplate.from_template(INTENT_PROMPT)
         self.chat_model = OpenAI(model=settings.LLM_MODEL, api_key=settings.OPENAI_API_KEY)
 
     def classify_intent(self, user_msg):
