@@ -77,7 +77,7 @@ class ConversationManager:
                     self._conversations.pop(conv.id, None)
                     return
                 else:  # chit-chat
-                    chain = self._chatbot_service.intent_chain(conv.memory, self.intent_prompt)
+                    chain = self._chatbot_service.intent_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
                     answer = result.get("answer", "Sorry, I couldn't process that.")
             except Exception as e:
