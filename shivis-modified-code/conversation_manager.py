@@ -23,7 +23,7 @@ class Conversation:
             max_token_limit=500,
             memory_key="chat_history",
             input_key="question",
-            return_messages=False,
+            return_messages=True,
             output_key="answer"
         )
 class ConversationManager:
