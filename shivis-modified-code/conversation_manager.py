@@ -6,7 +6,7 @@ from intercom_service import IntercomService
 from config import settings
 from prompts import INTENT_PROMPT
 from langchain.prompts import ChatPromptTemplate
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 
 
 
@@ -33,7 +33,7 @@ class ConversationManager:
         self._chatbot_service = chatbot_service
         self._intercom_service = intercom_service
         self.intent_prompt = ChatPromptTemplate.from_template(INTENT_PROMPT)
-        self.chat_model = OpenAI(model=settings.LLM_MODEL, api_key=settings.OPENAI_API_KEY)
+        self.chat_model = ChatOpenAI(model=settings.LLM_MODEL, api_key=settings.OPENAI_API_KEY)
 
     def classify_intent(self, user_msg):
         result = self.chat_model.invoke(self.intent_prompt.format(msg=user_msg))
