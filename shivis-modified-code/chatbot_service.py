@@ -31,5 +31,6 @@ class ChatbotService:
             llm=self.model,
             retriever=self.retriever,
             memory=memory,
-            combine_docs_chain_kwargs={"prompt": self.prompt}
+            combine_docs_chain_kwargs={"prompt": self.prompt},
+            return_source_documents=True
         )
