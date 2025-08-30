@@ -4,11 +4,9 @@ from langchain.memory import ConversationSummaryBufferMemory
 from chatbot_service import ChatbotService
 from intercom_service import IntercomService
 from config import settings
-
-CLOSING_KEYWORDS = ["ok", "okay", "thanks", "thank you", "thankyou",
-                    "bye", "goodbye", "see you",
-                    "perfect", "great", "good",
-                    "got it", "understood", "alright"]
+from prompts import INTENT_PROMPT
+from langchain.prompts import ChatPromptTemplate
+from langchain_openai import OpenAI
 
 
 
@@ -25,7 +23,7 @@ class Conversation:
             max_token_limit=500,
             memory_key="chat_history",
             input_key="question",
-            return_messages=True,
+            return_messages=False,
             output_key="answer"
         )
 class ConversationManager:
@@ -34,6 +32,13 @@ class ConversationManager:
         self._conversations = {}
         self._chatbot_service = chatbot_service
         self._intercom_service = intercom_service
+        self.intent_prompt = ChatPromptTemplate(INTENT_PROMPT)
+        self.chat_model = OpenAI(model=settings.LLM_MODEL, api_key=settings.OPENAI_API_KEY)
+
+    def classify_intent(self, user_msg):
+        result = self.chat_model.invoke(self.intent_prompt.format(msg=user_msg))
+        return result.content.strip().lower()
+
     
     def _get_or_create_conversation(self, conv_id: str) -> Conversation:
         if conv_id not in self._conversations:
@@ -58,14 +63,22 @@ class ConversationManager:
             conv.message_buffer = []  # clear early to avoid reprocessing
 
             try:
-                # Closing keyword detection
-                if any(kw in combined_message.lower() for kw in CLOSING_KEYWORDS):
-                    answer = "You're welcome!"
-                else:
+                intent = self.classify_intent(combined_message)
+                if (intent=="knowledge-query"):
                     chain = self._chatbot_service.get_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
                     answer = result.get("answer", "Sorry, I couldn't process that.")
                     print(result)
+                elif intent == "conversation-closure":
+                    answer = "You're welcome! Have a great day!"
+                    await self._intercom_service.reply_to_conversation(conv.id, answer)
+                    await self._intercom_service.close_conversation(conv.id)
+                    self._conversations.pop(conv.id, None)
+                    return
+                else:  # chit-chat
+                    chain = self._chatbot_service.intent_chain(conv.memory, self.intent_prompt)
+                    result = await chain.ainvoke({"question": combined_message})
+                    answer = result.get("answer", "Sorry, I couldn't process that.")
             except Exception as e:
                 print(f":x: Error during chain invocation: {e}")
                 answer = "An error occurred. Please try again later."

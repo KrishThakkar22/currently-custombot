@@ -1,11 +1,11 @@
-from langchain.chains import ConversationalRetrievalChain
+from langchain.chains import ConversationalRetrievalChain, LLMChain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_qdrant import QdrantVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
 from qdrant_client import QdrantClient
 from config import settings
-from prompts import SYSTEM_TEMPLATE, HUMAN_TEMPLATE
+from prompts import SYSTEM_TEMPLATE, HUMAN_TEMPLATE, GENERAL_CONVERSATION_PROMPT
 class ChatbotService:
     def __init__(self):
         self.model = ChatOpenAI(
@@ -26,11 +26,20 @@ class ChatbotService:
             ("system", SYSTEM_TEMPLATE),
             ("human", HUMAN_TEMPLATE)
         ])
+        self.general_prompt = ChatPromptTemplate(GENERAL_CONVERSATION_PROMPT)
     def get_chain(self, memory) -> ConversationalRetrievalChain:
         return ConversationalRetrievalChain.from_llm(
             llm=self.model,
             retriever=self.retriever,
             memory=memory,
             combine_docs_chain_kwargs={"prompt": self.prompt},
-            return_source_documents=True
+            return_source_documents=False,
+            output_key="answer"
+        )
+    def intent_chain(self, memory) -> LLMChain:
+        return LLMChain(
+            llm=self.model,
+            prompt=self.general_prompt,
+            memory=memory,
+            output_key="answer"
         )
