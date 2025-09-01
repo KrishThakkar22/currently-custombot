@@ -31,6 +31,10 @@ async def chat_endpoint(request: Request):
     question = BeautifulSoup(html_body, "html.parser").get_text().strip()
     if not question:
         return {"status": "no_content"}
+    if assignee_id is None or assignee_id == "":
+        await intercom_service.assign_conversation(conversation_id=conv_id, admin_id=settings.INTERCOM_ADMIN_ID)
+        REPLIED_MESSAGE_IDS[msg_id] = time.time()
+        await conversation_manager.handle_message(conv_id, question, msg_id)
     # Logic to only respond if assigned to the bot
     if assignee_id == settings.INTERCOM_ADMIN_ID:
         REPLIED_MESSAGE_IDS[msg_id] = time.time()
