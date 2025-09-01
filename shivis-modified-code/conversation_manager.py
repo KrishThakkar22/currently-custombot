@@ -7,6 +7,7 @@ from config import settings
 from prompts import INTENT_PROMPT
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain.chains import LLMChain
 
 
 
@@ -34,10 +35,17 @@ class ConversationManager:
         self._intercom_service = intercom_service
         self.intent_prompt = ChatPromptTemplate.from_template(INTENT_PROMPT)
         self.chat_model = ChatOpenAI(model=settings.LLM_MODEL, api_key=settings.OPENAI_API_KEY)
+       
 
-    def classify_intent(self, user_msg):
-        result = self.chat_model.invoke(self.intent_prompt.format(msg=user_msg))
-        return result.content.strip().lower()
+    async def classify_intent(self, user_msg, memory):
+        intent_chain = LLMChain(
+            llm=self.chat_model,
+            prompt=self.intent_prompt,
+            memory=memory,
+            output_key="answer"
+        )
+        result = await intent_chain.invoke()
+        return result["answer"].content.strip().lower()
 
     
     def _get_or_create_conversation(self, conv_id: str) -> Conversation:
@@ -63,7 +71,7 @@ class ConversationManager:
             conv.message_buffer = []  # clear early to avoid reprocessing
 
             try:
-                intent = self.classify_intent(combined_message)
+                intent = self.classify_intent(combined_message, conv.memory)
                 # print(intent)
                 if (intent=="knowledge-query"):
                     chain = self._chatbot_service.get_chain(conv.memory)
