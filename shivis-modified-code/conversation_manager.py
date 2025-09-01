@@ -44,7 +44,7 @@ class ConversationManager:
             memory=memory,
             output_key="answer"
         )
-        result = await intent_chain.invoke()
+        result = await intent_chain.invoke({"msg":user_msg})
         return result["answer"].content.strip().lower()
 
     
