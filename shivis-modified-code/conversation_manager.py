@@ -45,6 +45,7 @@ class ConversationManager:
             output_key="answer",
         )
         result = await intent_chain.ainvoke({"question":user_msg})
+        print(result)
         return result["answer"].content.strip().lower()
 
     
