@@ -73,10 +73,16 @@ Keep replies short (2–3 sentences).
 INTENT_PROMPT = """
 You are an intent classifier.
 
-User said: "{question}"
+Conversation so far:
+{chat_history}
 
-Classify the intent as one of:
-- "knowledge-query" → asking for factual info, troubleshooting, product details.
+Latest user message:
+"{question}"
+
+Classify the intent of the latest user message in the context of the entire conversation. 
+
+Possible intents:
+- "knowledge-query" → asking for factual info, troubleshooting, or product details.
 - "conversation-closure" → closing words like: ok, okay, thanks, thank you, bye, goodbye, see you, perfect, great.
 - "chit-chat" → greetings or small talk (hi, hello, how are you, what's up, etc.).
 
@@ -84,6 +90,7 @@ Return exactly one of these three words:
 knowledge-query
 conversation-closure
 chit-chat
+
 """
 
 GENERAL_CONVERSATION_PROMPT = """
