@@ -42,7 +42,8 @@ class ConversationManager:
             llm=self.chat_model,
             prompt=self.intent_prompt,
             memory=memory,
-            output_key="answer"
+            output_key="answer",
+            input_key = "msg"
         )
         result = await intent_chain.invoke({"msg":user_msg})
         return result["answer"].content.strip().lower()
