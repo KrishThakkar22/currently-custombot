@@ -64,12 +64,12 @@ class ConversationManager:
 
             try:
                 intent = self.classify_intent(combined_message)
-                print(intent)
+                # print(intent)
                 if (intent=="knowledge-query"):
                     chain = self._chatbot_service.get_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
                     answer = result.get("answer", "Sorry, I couldn't process that.")
-                    print(result)
+                    # print(result)
                 elif intent == "conversation-closure":
                     answer = "You're welcome! Have a great day!"
                     await self._intercom_service.reply_to_conversation(conv.id, answer)
