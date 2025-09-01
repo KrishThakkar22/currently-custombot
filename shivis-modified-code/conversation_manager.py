@@ -71,7 +71,7 @@ class ConversationManager:
             conv.message_buffer = []  # clear early to avoid reprocessing
 
             try:
-                intent = self.classify_intent(combined_message, conv.memory)
+                intent = await self.classify_intent(combined_message, conv.memory)
                 # print(intent)
                 if (intent=="knowledge-query"):
                     chain = self._chatbot_service.get_chain(conv.memory)
