@@ -46,7 +46,7 @@ class ConversationManager:
         )
         result = await intent_chain.ainvoke({"question":user_msg})
         print(result["answer"])
-        return result["answer"].content.strip().lower()
+        return result["answer"].strip().lower()
 
     
     def _get_or_create_conversation(self, conv_id: str) -> Conversation:
