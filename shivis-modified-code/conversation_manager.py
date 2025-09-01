@@ -43,9 +43,8 @@ class ConversationManager:
             prompt=self.intent_prompt,
             memory=memory,
             output_key="answer",
-            input_value = "msg"
         )
-        result = await intent_chain.invoke({"msg":user_msg})
+        result = await intent_chain.ainvoke({"question":user_msg})
         return result["answer"].content.strip().lower()
 
     

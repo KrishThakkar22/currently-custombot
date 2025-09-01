@@ -73,7 +73,7 @@ Keep replies short (2–3 sentences).
 INTENT_PROMPT = """
 You are an intent classifier.
 
-User said: "{msg}"
+User said: "{question}"
 
 Classify the intent as one of:
 - "knowledge-query" → asking for factual info, troubleshooting, product details.
