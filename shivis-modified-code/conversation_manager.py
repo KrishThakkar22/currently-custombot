@@ -72,7 +72,7 @@ class ConversationManager:
 
             try:
                 intent = await self.classify_intent(combined_message, conv.memory)
-                # print(intent)
+                print(intent)
                 if (intent=="knowledge-query"):
                     chain = self._chatbot_service.get_chain(conv.memory)
                     result = await chain.ainvoke({"question": combined_message})
