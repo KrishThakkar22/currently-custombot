@@ -30,7 +30,7 @@ async def chat_endpoint(request: Request):
     html_body = payload.get("data", {}).get("item", {}).get("conversation_parts", {}).get("conversation_parts", [])[-1].get("body", "") or payload.get("data", {}).get("item", {}).get("source", {}).get("body")
     question = BeautifulSoup(html_body, "html.parser").get_text().strip()
     if not question:
-        return {"status": "no_content"}
+        return {"status": "no_content"} 
     if assignee_id is None or assignee_id == "":
         await intercom_service.assign_conversation(conversation_id=conv_id, admin_id=settings.INTERCOM_ADMIN_ID)
         REPLIED_MESSAGE_IDS[msg_id] = time.time()
