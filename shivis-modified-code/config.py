@@ -21,7 +21,7 @@ class Settings:
     HF_TOKEN: str = os.getenv("HF_TOKEN")
 
     # Application Settings
-    BUFFER_WAIT_SECONDS: int = 2
+    BUFFER_WAIT_SECONDS: int =5 
     REPLIED_ID_EXPIRE_SECONDS: int = 1800
 
 # Create a single instance to be imported elsewhere

@@ -1,0 +1,153 @@
+{
+  "type": "notification_event",
+  "app_id": "vvy5iw2g",
+  "data": {
+    "type": "notification_event_data",
+    "item": {
+      "type": "conversation",
+      "id": "215469858676340",
+      "created_at": 1752561471,
+      "updated_at": 1757423197,
+      "waiting_since": 1757423197,
+      "snoozed_until": null,
+      "source": {
+        "type": "conversation",
+        "id": "3009680382",
+        "delivered_as": "customer_initiated",
+        "subject": "",
+        "body": "<p>hey</p>",
+        "author": {
+          "type": "user",
+          "id": "685a2b7a299617f063b4a7d6",
+          "name": "Krish Thakkar",
+          "email": ""
+        },
+        "attachments": [],
+        "url": null,
+        "redacted": false
+      },
+      "contacts": {
+        "type": "contact.list",
+        "contacts": [
+          {
+            "type": "contact",
+            "id": "685a2b7a299617f063b4a7d6",
+            "external_id": "88638"
+          }
+        ]
+      },
+      "first_contact_reply": {
+        "created_at": 1752561471,
+        "type": "conversation",
+        "url": null
+      },
+      "admin_assignee_id": 8467307,
+      "team_assignee_id": null,
+      "open": true,
+      "state": "open",
+      "read": true,
+      "tags": {
+        "type": "tag.list",
+        "tags": []
+      },
+      "priority": "not_priority",
+      "sla_applied": null,
+      "statistics": {
+        "type": "conversation_statistics",
+        "time_to_assignment": 10,
+        "time_to_admin_reply": 38,
+        "time_to_first_close": 2357,
+        "time_to_last_close": 1316785,
+        "median_time_to_reply": 13,
+        "first_contact_reply_at": "2025-07-15T06:37:51.000Z",
+        "first_assignment_at": "2025-07-15T06:38:01.000Z",
+        "first_admin_reply_at": "2025-07-15T06:38:29.000Z",
+        "first_close_at": "2025-07-15T07:17:08.000Z",
+        "last_assignment_at": "2025-09-09T12:23:18.000Z",
+        "last_assignment_admin_reply_at": "2025-09-09T12:24:48.000Z",
+        "last_contact_reply_at": "2025-09-09T13:06:37.000Z",
+        "last_admin_reply_at": "2025-09-09T13:05:26.000Z",
+        "last_close_at": "2025-09-09T12:24:16.000Z",
+        "last_closed_by_id": 8467307,
+        "count_reopens": 31,
+        "count_assignments": 42,
+        "count_conversation_parts": 633,
+        "assigned_team_first_response_time": [],
+        "assigned_team_first_response_time_in_office_hours": [],
+        "handling_time": 2268662
+      },
+      "conversation_rating": null,
+      "teammates": {
+        "type": "admin.list",
+        "admins": [
+          { "type": "admin", "id": "8467307" },
+          { "type": "admin", "id": "8032673" }
+        ]
+      },
+      "title": "",
+      "custom_attributes": {
+        "Has attachments": false,
+        "Auto-translated": false,
+        "Fin AI Agent: Preview": false,
+        "Copilot used": false,
+        "Language": "English"
+      },
+      "topics": {
+        "type": "topic.list",
+        "topics": [],
+        "total_count": 0
+      },
+      "ticket": null,
+      "linked_objects": {
+        "type": "list",
+        "data": [],
+        "total_count": 0,
+        "has_more": false
+      },
+      "ai_agent": null,
+      "ai_agent_participated": false,
+      "conversation_parts": {
+        "type": "conversation_part.list",
+        "conversation_parts": [
+          {
+            "type": "conversation_part",
+            "id": "29960776235",
+            "part_type": "comment",
+            "body": "<p>I need help regarding uploading moments l</p>",
+            "created_at": 1757423197,
+            "updated_at": 1757423197,
+            "notified_at": 1757423197,
+            "assigned_to": null,
+            "author": {
+              "id": "685a2b7a299617f063b4a7d6",
+              "type": "user",
+              "name": "Krish Thakkar",
+              "email": "",
+              "from_ai_agent": false,
+              "is_ai_answer": false
+            },
+            "attachments": [],
+            "external_id": null,
+            "redacted": false,
+            "metadata": {},
+            "email_message_metadata": null,
+            "state": "open",
+            "tags": [],
+            "event_details": {},
+            "app_package_code": null
+          }
+        ],
+        "total_count": 1
+      }
+    }
+  },
+  "links": {},
+  "id": "notif_8c0e5fc3-1346-4dc2-b83b-e74d55e93695",
+  "topic": "conversation.user.replied",
+  "delivery_status": "pending",
+  "delivery_attempts": 1,
+  "delivered_at": 0,
+  "first_sent_at": 1757423200,
+  "created_at": 1757423199,
+  "self": null
+}

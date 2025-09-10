@@ -99,7 +99,7 @@ class ConversationManager:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
                 await self._intercom_service.close_conversation(conv.id)
                 self._conversations.pop(conv.id, None)  # safe cleanup
-            elif "specialist" in ans_lower and "transfer" in ans_lower:
+            elif "specialist" in ans_lower:
                 await self._intercom_service.reply_to_conversation(conv.id, answer)
                 await self._intercom_service.unassign_conversation(conv.id)
                 self._conversations.pop(conv.id, None)
