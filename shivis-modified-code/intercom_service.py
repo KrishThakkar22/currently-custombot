@@ -1,5 +1,6 @@
 import httpx
 from config import settings
+import datetime
 class IntercomService:
     def __init__(self):
         self.base_url = "https://api.intercom.io"
@@ -51,11 +52,25 @@ class IntercomService:
         print(f":white_check_mark: Assigned conversation {conversation_id} to admin {admin_id}")
     async def unassign_conversation(self, conversation_id: str):
         url = f"{self.base_url}/conversations/{conversation_id}/reply"
-        payload = {
-            "message_type": "assignment",
-            "type": "admin",
-            "admin_id": settings.INTERCOM_ADMIN_ID,
-            "assignee_id": settings.INTERCOM_SPECIALIST_ID
-        }
-        await self._send_request("POST", url, payload)
-        print(f":white_check_mark: Unassigned conversation {conversation_id}")
+
+        now = datetime.datetime.now()
+        current_time = now.time()
+        if current_time < settings.THRESHOLD:
+            payload = {
+                "message_type": "assignment",
+                "type": "admin",
+                "admin_id": settings.INTERCOM_ADMIN_ID,
+                "assignee_id": settings.INTERCOM_SPECIALIST_ID
+            }
+            await self._send_request("POST", url, payload)
+            print(f":white_check_mark: Unassigned conversation {conversation_id} to REENA")
+        else:
+            payload = {
+                "message_type": "assignment",
+                "type": "admin",
+                "admin_id": settings.INTERCOM_ADMIN_ID,
+                "assignee_id": settings.INTERCOM_SPECIALIST_ID_2
+            }
+            await self._send_request("POST", url, payload)
+            print(f":white_check_mark: Unassigned conversation {conversation_id} to NIKHIL")
+        

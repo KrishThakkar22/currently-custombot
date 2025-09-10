@@ -68,7 +68,7 @@ async def chat_endpoint(request: Request):
     last_admin_reply_at = to_epoch(last_admin_reply_at)
     last_contact_reply_at = to_epoch(last_contact_reply_at)
     
-    if last_close_at and last_contact_reply_at and last_contact_reply_at > last_close_at and  last_admin_reply_at < last_close_at :
+    if last_close_at and last_contact_reply_at and last_admin_reply_at and last_contact_reply_at > last_close_at and  last_admin_reply_at < last_close_at :
         await intercom_service.assign_conversation(conversation_id=conv_id, admin_id=settings.INTERCOM_ADMIN_ID)
         REPLIED_MESSAGE_IDS[msg_id] = time.time()
         await conversation_manager.handle_message(conv_id, question, msg_id)
